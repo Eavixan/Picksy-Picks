@@ -148,7 +148,6 @@ function ProductDetails({ item }) {
           <div><span>Recommendation Score</span><strong>{fixed(item.score)}</strong></div>
           <div><span>Average Rating</span><strong>{item.rating ?? 'N/A'}</strong></div>
           <div><span>Rating Count</span><strong>{fmt(item.ratingCount)}</strong></div>
-          <div><span>Price</span><strong>{item.price ? `$${item.price}` : 'N/A'}</strong></div>
         </div>
         <div className="detail-note">
           <ShoppingBag size={18} />
