@@ -1,0 +1,22 @@
+{
+  "name": "marketplace-recommender-fullstack-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "npm run start",
+    "dev:vite": "vite --host 127.0.0.1 --port 5173",
+    "start": "npm run build && npm run preview",
+    "build": "vite build",
+    "preview": "vite preview --strictPort --host 127.0.0.1 --port 4173",
+    "demo": "npm run start"
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "latest",
+    "lucide-react": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "recommender-fullstack-local": "file:..",
+    "vite": "latest"
+  }
+}
