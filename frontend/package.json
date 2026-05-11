@@ -16,7 +16,6 @@
     "lucide-react": "latest",
     "react": "latest",
     "react-dom": "latest",
-    "recommender-fullstack-local": "file:..",
     "vite": "latest"
   }
 }
