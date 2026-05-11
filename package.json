@@ -1,0 +1,13 @@
+{
+  "name": "recommender-fullstack-local",
+  "private": true,
+  "scripts": {
+    "start": "concurrently -n BACKEND,FRONTEND \"cmd /c .\\start-backend.bat\" \"cmd /c .\\start-frontend.bat\"",
+    "dev": "npm run start",
+    "backend": "cmd /c .\\start-backend.bat",
+    "frontend": "cmd /c .\\start-frontend.bat"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.1"
+  }
+}

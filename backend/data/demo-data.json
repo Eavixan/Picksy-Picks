@@ -1,0 +1,864 @@
+{
+  "project": {
+    "title": "Picksy Picks",
+    "subtitle": "A Pinterest-inspired shopping discovery system that recommends products, similar users, similar items, clusters, and sponsored picks.",
+    "dataset": {
+      "users": 2559,
+      "items": 1908,
+      "demoUsers": 466,
+      "category": "Amazon Fashion",
+      "interactionType": "Implicit feedback from ratings and product interactions",
+      "interactions": 7259,
+      "trainInteractions": 2463,
+      "validationInteractions": 1011,
+      "testInteractions": 898,
+      "density": 0.001487,
+      "sparsity": 0.998513
+    },
+    "pipeline": [
+      "Clean Amazon product + interaction data",
+      "Create chronological train/validation/test split",
+      "Train popularity, collaborative filtering, neural MF, graph embeddings, and LightFM models",
+      "Evaluate with HitRate@K, NDCG@K, and MRR@K",
+      "Serve top-K recommendations in an interactive web demo"
+    ],
+    "backendMode": "Snapshot API mode: localhost backend serves notebook-exported recommendation data. Replace backend/data/demo-data.json with a fresh export after rerunning the notebook."
+  },
+  "models": [
+    {
+      "name": "Popularity",
+      "family": "Baseline",
+      "description": "Ranks globally strong items. Simple, fast, and surprisingly competitive for sparse marketplace data.",
+      "metrics": {
+        "hit5": 0.380846,
+        "hit10": 0.494432,
+        "hit20": 0.614699,
+        "ndcg10": 0.303916,
+        "mrr10": 0.245091
+      }
+    },
+    {
+      "name": "Neural Matrix Factorization",
+      "family": "Neural recommender",
+      "description": "Learns user and item embeddings with a neural scoring layer for personalized ranking.",
+      "metrics": {
+        "hit5": 0.325167,
+        "hit10": 0.452116,
+        "hit20": 0.615813,
+        "ndcg10": 0.274119,
+        "mrr10": 0.219725
+      }
+    },
+    {
+      "name": "LightFM WARP",
+      "family": "Hybrid matrix factorization",
+      "description": "Optimizes ranking with WARP loss and can be extended with metadata features.",
+      "metrics": {
+        "hit5": 0.273942,
+        "hit10": 0.383073,
+        "hit20": 0.536748,
+        "ndcg10": 0.221271,
+        "mrr10": 0.172008
+      }
+    },
+    {
+      "name": "Graph Embeddings",
+      "family": "Graph-based recommender",
+      "description": "Builds a user-item graph and uses random-walk embeddings to score user-item links.",
+      "metrics": {
+        "hit5": 0.206013,
+        "hit10": 0.297327,
+        "hit20": 0.477728,
+        "ndcg10": 0.164093,
+        "mrr10": 0.123259
+      }
+    },
+    {
+      "name": "Matrix Factorization SVD",
+      "family": "Latent factor model",
+      "description": "Projects the user-item matrix into a lower-dimensional latent space.",
+      "metrics": {
+        "hit5": 0.142539,
+        "hit10": 0.228285,
+        "hit20": 0.412027,
+        "ndcg10": 0.122519,
+        "mrr10": 0.090693
+      }
+    },
+    {
+      "name": "User-Based CF",
+      "family": "Collaborative filtering",
+      "description": "Finds users with similar histories and recommends what similar users liked.",
+      "metrics": {
+        "hit5": 0.17706,
+        "hit10": 0.207127,
+        "hit20": 0.292873,
+        "ndcg10": 0.149211,
+        "mrr10": 0.130923
+      }
+    },
+    {
+      "name": "Item-Based CF",
+      "family": "Collaborative filtering",
+      "description": "Recommends products similar to items already seen by the user.",
+      "metrics": {
+        "hit5": 0.172606,
+        "hit10": 0.207127,
+        "hit20": 0.292873,
+        "ndcg10": 0.135166,
+        "mrr10": 0.112623
+      }
+    }
+  ],
+  "users": [
+    {
+      "id": 1560,
+      "label": "User 1560",
+      "persona": "Jewelry charm collector",
+      "summary": "Mostly interacts with sterling silver charm bracelets, animal charms, and giftable fashion jewelry.",
+      "dominantCategories": [
+        "AMAZON FASHION",
+        "Sterling Silver",
+        "Charm Jewelry"
+      ],
+      "history": [
+        {
+          "id": 1571,
+          "title": "NinaQueen Shy Hedgehog 925 Sterling Silver Cubic-Zirconia Charm",
+          "category": "AMAZON FASHION",
+          "rating": 5,
+          "time": "2017"
+        },
+        {
+          "id": 1557,
+          "title": "NinaQueen Raccoon 925 Sterling Silver Cubic-Zirconia Charm",
+          "category": "AMAZON FASHION",
+          "rating": 5,
+          "time": "2017"
+        },
+        {
+          "id": 1543,
+          "title": "NinaQueen Skiing Owl 925 Sterling Silver Multicolor Charm",
+          "category": "AMAZON FASHION",
+          "rating": 5,
+          "time": "2017"
+        },
+        {
+          "id": 1071,
+          "title": "NinaQueen Roman Holiday 925 Sterling Silver Charm",
+          "category": "AMAZON FASHION",
+          "rating": 5,
+          "time": "2017"
+        },
+        {
+          "id": 781,
+          "title": "NinaQueen Flower Queen 925 Sterling Silver Gold Charm",
+          "category": "AMAZON FASHION",
+          "rating": 5,
+          "time": "2017"
+        },
+        {
+          "id": 778,
+          "title": "NinaQueen Heart-shaped Hollow 925 Sterling Silver Charm",
+          "category": "AMAZON FASHION",
+          "rating": 5,
+          "time": "2017"
+        }
+      ],
+      "heldout": [
+        {
+          "split": "Validation",
+          "id": 775,
+          "title": "NinaQueen Star Pave 925 Sterling Silver Purple Charm",
+          "category": "AMAZON FASHION",
+          "rating": 5
+        },
+        {
+          "split": "Test",
+          "id": 783,
+          "title": "NinaQueen Sweet Elephant 925 Sterling Silver Gift Charm",
+          "category": "AMAZON FASHION",
+          "rating": 5
+        }
+      ],
+      "similarUsers": [
+        {
+          "id": 450,
+          "score": 0.94,
+          "reason": "Similar charm jewelry and bracelet history"
+        },
+        {
+          "id": 360,
+          "score": 0.89,
+          "reason": "Frequent fashion jewelry engagement"
+        },
+        {
+          "id": 324,
+          "score": 0.86,
+          "reason": "Shared interest in silver accessories"
+        }
+      ],
+      "recommendations": {
+        "Neural Matrix Factorization": [
+          {
+            "rank": 1,
+            "id": 405,
+            "title": "Vintage Style Tribal Gray Enamel Leaf Cluster Statement Necklace",
+            "category": "AMAZON FASHION",
+            "rating": 3.9,
+            "ratingCount": 463,
+            "price": null,
+            "score": 0.7719,
+            "why": "Neural embeddings matched this statement jewelry with the user\u2019s charm-heavy history.",
+            "model": "Neural Matrix Factorization",
+            "imageSeed": 5
+          },
+          {
+            "rank": 2,
+            "id": 398,
+            "title": "Qiyun Luxury Purple Shell Like Oval Bead Necklace",
+            "category": "AMAZON FASHION",
+            "rating": 4.2,
+            "ratingCount": 371,
+            "price": null,
+            "score": 0.7286,
+            "why": "High similarity to decorative fashion jewelry interactions.",
+            "model": "Neural Matrix Factorization",
+            "imageSeed": 6
+          },
+          {
+            "rank": 3,
+            "id": 436,
+            "title": "QIYUN.Z Geometric Oil Drop Silver Chain Tribal Necklace",
+            "category": "AMAZON FASHION",
+            "rating": 3.9,
+            "ratingCount": 102,
+            "price": null,
+            "score": 0.7253,
+            "why": "Shares silver jewelry signals with the user's profile.",
+            "model": "Neural Matrix Factorization",
+            "imageSeed": 4
+          },
+          {
+            "rank": 4,
+            "id": 407,
+            "title": "Qiyun Angel's Wing Green Fringe Dangle Necklace",
+            "category": "AMAZON FASHION",
+            "rating": 3.5,
+            "ratingCount": 195,
+            "price": null,
+            "score": 0.7239,
+            "why": "Recommended from nearby latent item factors.",
+            "model": "Neural Matrix Factorization",
+            "imageSeed": 7
+          },
+          {
+            "rank": 5,
+            "id": 430,
+            "title": "Qiyun Acrylic Royal Blue Black Tibet Silver Necklace",
+            "category": "AMAZON FASHION",
+            "rating": 3.7,
+            "ratingCount": 267,
+            "price": null,
+            "score": 0.7237,
+            "why": "Similar visual style and fashion category match.",
+            "model": "Neural Matrix Factorization",
+            "imageSeed": 6
+          },
+          {
+            "rank": 6,
+            "id": 714,
+            "title": "Fashion Brand 925 Sterling Silver Heart Love Charm Bracelet",
+            "category": "AMAZON FASHION",
+            "rating": 3.8,
+            "ratingCount": 815,
+            "price": null,
+            "score": 0.7211,
+            "why": "Strong overlap with sterling silver charm interactions.",
+            "model": "Neural Matrix Factorization",
+            "imageSeed": 2
+          },
+          {
+            "rank": 7,
+            "id": 397,
+            "title": "Colorful Flower Cluster Festoon Y-Necklace Bib",
+            "category": "AMAZON FASHION",
+            "rating": 3.8,
+            "ratingCount": 93,
+            "price": null,
+            "score": 0.7171,
+            "why": "Fashion accessory with similar user-item embedding direction.",
+            "model": "Neural Matrix Factorization",
+            "imageSeed": 5
+          },
+          {
+            "rank": 8,
+            "id": 396,
+            "title": "Fashion Green Enamel Bib Link Plaque Dangle Necklace",
+            "category": "AMAZON FASHION",
+            "rating": 3.8,
+            "ratingCount": 199,
+            "price": null,
+            "score": 0.7129,
+            "why": "Matches jewelry and enamel accessory patterns.",
+            "model": "Neural Matrix Factorization",
+            "imageSeed": 4
+          },
+          {
+            "rank": 9,
+            "id": 439,
+            "title": "Qiyun Hollow Out Butterfly Antique Silver Necklace",
+            "category": "AMAZON FASHION",
+            "rating": 3.6,
+            "ratingCount": 183,
+            "price": null,
+            "score": 0.7128,
+            "why": "Animal/butterfly design aligns with past charm tastes.",
+            "model": "Neural Matrix Factorization",
+            "imageSeed": 7
+          },
+          {
+            "rank": 10,
+            "id": 403,
+            "title": "Tribal Tibet Silver Grape Cluster Scale Pendant Necklace",
+            "category": "AMAZON FASHION",
+            "rating": 4.1,
+            "ratingCount": 300,
+            "price": null,
+            "score": 0.709,
+            "why": "Silver pendant style fits the user\u2019s accessory cluster.",
+            "model": "Neural Matrix Factorization",
+            "imageSeed": 3
+          }
+        ],
+        "Popularity": [
+          {
+            "rank": 1,
+            "id": 714,
+            "title": "Fashion Brand 925 Sterling Silver Heart Love Charm Bracelet",
+            "category": "AMAZON FASHION",
+            "rating": 3.8,
+            "ratingCount": 815,
+            "price": null,
+            "score": 0.9182,
+            "why": "Globally popular fashion jewelry item with many ratings.",
+            "model": "Popularity",
+            "imageSeed": 2
+          },
+          {
+            "rank": 2,
+            "id": 405,
+            "title": "Vintage Style Tribal Gray Enamel Leaf Cluster Statement Necklace",
+            "category": "AMAZON FASHION",
+            "rating": 3.9,
+            "ratingCount": 463,
+            "price": null,
+            "score": 0.8701,
+            "why": "Popular item in the same broad category.",
+            "model": "Popularity",
+            "imageSeed": 5
+          },
+          {
+            "rank": 3,
+            "id": 398,
+            "title": "Qiyun Luxury Purple Shell Like Oval Bead Necklace",
+            "category": "AMAZON FASHION",
+            "rating": 4.2,
+            "ratingCount": 371,
+            "price": null,
+            "score": 0.852,
+            "why": "High rating count and strong average rating.",
+            "model": "Popularity",
+            "imageSeed": 6
+          },
+          {
+            "rank": 4,
+            "id": 403,
+            "title": "Tribal Tibet Silver Grape Cluster Scale Pendant Necklace",
+            "category": "AMAZON FASHION",
+            "rating": 4.1,
+            "ratingCount": 300,
+            "price": null,
+            "score": 0.8395,
+            "why": "Popular silver-style necklace.",
+            "model": "Popularity",
+            "imageSeed": 3
+          },
+          {
+            "rank": 5,
+            "id": 430,
+            "title": "Qiyun Acrylic Royal Blue Black Tibet Silver Necklace",
+            "category": "AMAZON FASHION",
+            "rating": 3.7,
+            "ratingCount": 267,
+            "price": null,
+            "score": 0.8127,
+            "why": "Frequently interacted item from the fashion catalog.",
+            "model": "Popularity",
+            "imageSeed": 6
+          }
+        ],
+        "LightFM WARP": [
+          {
+            "rank": 1,
+            "id": 783,
+            "title": "NinaQueen Sweet Elephant 925 Sterling Silver Gift Charm",
+            "category": "AMAZON FASHION",
+            "rating": 5.0,
+            "ratingCount": 210,
+            "price": null,
+            "score": 0.6914,
+            "why": "Hybrid ranker connects charm metadata with user behavior.",
+            "model": "LightFM WARP",
+            "imageSeed": 7
+          },
+          {
+            "rank": 2,
+            "id": 775,
+            "title": "NinaQueen Star Pave 925 Sterling Silver Purple Charm",
+            "category": "AMAZON FASHION",
+            "rating": 5.0,
+            "ratingCount": 175,
+            "price": null,
+            "score": 0.6723,
+            "why": "Close match to held-out future charm interactions.",
+            "model": "LightFM WARP",
+            "imageSeed": 7
+          },
+          {
+            "rank": 3,
+            "id": 714,
+            "title": "Fashion Brand 925 Sterling Silver Heart Love Charm Bracelet",
+            "category": "AMAZON FASHION",
+            "rating": 3.8,
+            "ratingCount": 815,
+            "price": null,
+            "score": 0.6641,
+            "why": "Metadata and interaction pattern both point to charm jewelry.",
+            "model": "LightFM WARP",
+            "imageSeed": 2
+          },
+          {
+            "rank": 4,
+            "id": 439,
+            "title": "Qiyun Hollow Out Butterfly Antique Silver Necklace",
+            "category": "AMAZON FASHION",
+            "rating": 3.6,
+            "ratingCount": 183,
+            "price": null,
+            "score": 0.6419,
+            "why": "Animal accessory style matches historical profile.",
+            "model": "LightFM WARP",
+            "imageSeed": 7
+          },
+          {
+            "rank": 5,
+            "id": 436,
+            "title": "QIYUN.Z Geometric Oil Drop Silver Chain Tribal Necklace",
+            "category": "AMAZON FASHION",
+            "rating": 3.9,
+            "ratingCount": 102,
+            "price": null,
+            "score": 0.633,
+            "why": "Relevant fashion accessory candidate from hybrid scoring.",
+            "model": "LightFM WARP",
+            "imageSeed": 4
+          }
+        ],
+        "Graph Embeddings": [
+          {
+            "rank": 1,
+            "id": 775,
+            "title": "NinaQueen Star Pave 925 Sterling Silver Purple Charm",
+            "category": "AMAZON FASHION",
+            "rating": 5.0,
+            "ratingCount": 175,
+            "price": null,
+            "score": 0.6204,
+            "why": "Nearby in the user-item graph through shared jewelry interactions.",
+            "model": "Graph Embeddings",
+            "imageSeed": 7
+          },
+          {
+            "rank": 2,
+            "id": 783,
+            "title": "NinaQueen Sweet Elephant 925 Sterling Silver Gift Charm",
+            "category": "AMAZON FASHION",
+            "rating": 5.0,
+            "ratingCount": 210,
+            "price": null,
+            "score": 0.6117,
+            "why": "Graph random walks place it close to this user.",
+            "model": "Graph Embeddings",
+            "imageSeed": 7
+          },
+          {
+            "rank": 3,
+            "id": 714,
+            "title": "Fashion Brand 925 Sterling Silver Heart Love Charm Bracelet",
+            "category": "AMAZON FASHION",
+            "rating": 3.8,
+            "ratingCount": 815,
+            "price": null,
+            "score": 0.5852,
+            "why": "Connected through shared bracelet/charm behavior.",
+            "model": "Graph Embeddings",
+            "imageSeed": 2
+          },
+          {
+            "rank": 4,
+            "id": 439,
+            "title": "Qiyun Hollow Out Butterfly Antique Silver Necklace",
+            "category": "AMAZON FASHION",
+            "rating": 3.6,
+            "ratingCount": 183,
+            "price": null,
+            "score": 0.5529,
+            "why": "Graph neighborhood contains similar animal jewelry products.",
+            "model": "Graph Embeddings",
+            "imageSeed": 7
+          },
+          {
+            "rank": 5,
+            "id": 405,
+            "title": "Vintage Style Tribal Gray Enamel Leaf Cluster Statement Necklace",
+            "category": "AMAZON FASHION",
+            "rating": 3.9,
+            "ratingCount": 463,
+            "price": null,
+            "score": 0.5301,
+            "why": "Popular nearby item in the fashion jewelry graph.",
+            "model": "Graph Embeddings",
+            "imageSeed": 5
+          }
+        ]
+      }
+    },
+    {
+      "id": 450,
+      "label": "User 450",
+      "persona": "Accessory browser",
+      "summary": "Explores fashion accessories with a preference for necklaces, bracelets, and decorative statement pieces.",
+      "dominantCategories": [
+        "AMAZON FASHION",
+        "Necklaces",
+        "Bracelets"
+      ],
+      "history": [
+        {
+          "id": 405,
+          "title": "Vintage Style Tribal Gray Enamel Leaf Cluster Statement Necklace",
+          "category": "AMAZON FASHION",
+          "rating": 4,
+          "time": "2017"
+        },
+        {
+          "id": 398,
+          "title": "Qiyun Luxury Purple Shell Like Oval Bead Necklace",
+          "category": "AMAZON FASHION",
+          "rating": 5,
+          "time": "2017"
+        },
+        {
+          "id": 403,
+          "title": "Tribal Tibet Silver Grape Cluster Scale Pendant Necklace",
+          "category": "AMAZON FASHION",
+          "rating": 4,
+          "time": "2018"
+        }
+      ],
+      "heldout": [
+        {
+          "split": "Test",
+          "id": 430,
+          "title": "Qiyun Acrylic Royal Blue Black Tibet Silver Necklace",
+          "category": "AMAZON FASHION",
+          "rating": 4
+        }
+      ],
+      "similarUsers": [
+        {
+          "id": 1560,
+          "score": 0.94,
+          "reason": "Shared jewelry browsing pattern"
+        },
+        {
+          "id": 360,
+          "score": 0.88,
+          "reason": "Similar necklace interactions"
+        },
+        {
+          "id": 1150,
+          "score": 0.82,
+          "reason": "Fashion accessory overlap"
+        }
+      ],
+      "recommendations": {
+        "Neural Matrix Factorization": [
+          {
+            "rank": 1,
+            "id": 436,
+            "title": "QIYUN.Z Geometric Oil Drop Silver Chain Tribal Necklace",
+            "category": "AMAZON FASHION",
+            "rating": 3.9,
+            "ratingCount": 102,
+            "price": null,
+            "score": 0.7453,
+            "why": "Strong necklace-style match from user/item embeddings.",
+            "model": "Neural Matrix Factorization",
+            "imageSeed": 4
+          },
+          {
+            "rank": 2,
+            "id": 407,
+            "title": "Qiyun Angel's Wing Green Fringe Dangle Necklace",
+            "category": "AMAZON FASHION",
+            "rating": 3.5,
+            "ratingCount": 195,
+            "price": null,
+            "score": 0.7288,
+            "why": "Similar decorative accessory profile.",
+            "model": "Neural Matrix Factorization",
+            "imageSeed": 7
+          },
+          {
+            "rank": 3,
+            "id": 397,
+            "title": "Colorful Flower Cluster Festoon Y-Necklace Bib",
+            "category": "AMAZON FASHION",
+            "rating": 3.8,
+            "ratingCount": 93,
+            "price": null,
+            "score": 0.7211,
+            "why": "Recommended from nearby necklace factors.",
+            "model": "Neural Matrix Factorization",
+            "imageSeed": 5
+          },
+          {
+            "rank": 4,
+            "id": 714,
+            "title": "Fashion Brand 925 Sterling Silver Heart Love Charm Bracelet",
+            "category": "AMAZON FASHION",
+            "rating": 3.8,
+            "ratingCount": 815,
+            "price": null,
+            "score": 0.7012,
+            "why": "Popular jewelry item with bracelet overlap.",
+            "model": "Neural Matrix Factorization",
+            "imageSeed": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": 360,
+      "label": "User 360",
+      "persona": "Trend-sensitive shopper",
+      "summary": "Responds well to highly-rated fashion items and visually distinctive accessories.",
+      "dominantCategories": [
+        "AMAZON FASHION",
+        "Trending",
+        "Statement Jewelry"
+      ],
+      "history": [
+        {
+          "id": 714,
+          "title": "Fashion Brand 925 Sterling Silver Heart Love Charm Bracelet",
+          "category": "AMAZON FASHION",
+          "rating": 4,
+          "time": "2018"
+        },
+        {
+          "id": 439,
+          "title": "Qiyun Hollow Out Butterfly Antique Silver Necklace",
+          "category": "AMAZON FASHION",
+          "rating": 4,
+          "time": "2018"
+        },
+        {
+          "id": 396,
+          "title": "Fashion Green Enamel Bib Link Plaque Dangle Necklace",
+          "category": "AMAZON FASHION",
+          "rating": 4,
+          "time": "2018"
+        }
+      ],
+      "heldout": [
+        {
+          "split": "Validation",
+          "id": 407,
+          "title": "Qiyun Angel's Wing Green Fringe Dangle Necklace",
+          "category": "AMAZON FASHION",
+          "rating": 4
+        }
+      ],
+      "similarUsers": [
+        {
+          "id": 450,
+          "score": 0.88,
+          "reason": "Similar accessory discovery behavior"
+        },
+        {
+          "id": 1560,
+          "score": 0.89,
+          "reason": "Jewelry category overlap"
+        },
+        {
+          "id": 829,
+          "score": 0.79,
+          "reason": "Shared high-rated fashion items"
+        }
+      ],
+      "recommendations": {
+        "Neural Matrix Factorization": [
+          {
+            "rank": 1,
+            "id": 398,
+            "title": "Qiyun Luxury Purple Shell Like Oval Bead Necklace",
+            "category": "AMAZON FASHION",
+            "rating": 4.2,
+            "ratingCount": 371,
+            "price": null,
+            "score": 0.7392,
+            "why": "High score from trend and fashion accessory signals.",
+            "model": "Neural Matrix Factorization",
+            "imageSeed": 6
+          },
+          {
+            "rank": 2,
+            "id": 405,
+            "title": "Vintage Style Tribal Gray Enamel Leaf Cluster Statement Necklace",
+            "category": "AMAZON FASHION",
+            "rating": 3.9,
+            "ratingCount": 463,
+            "price": null,
+            "score": 0.7137,
+            "why": "Popular statement item near this user in embedding space.",
+            "model": "Neural Matrix Factorization",
+            "imageSeed": 5
+          },
+          {
+            "rank": 3,
+            "id": 430,
+            "title": "Qiyun Acrylic Royal Blue Black Tibet Silver Necklace",
+            "category": "AMAZON FASHION",
+            "rating": 3.7,
+            "ratingCount": 267,
+            "price": null,
+            "score": 0.6922,
+            "why": "Style and category match.",
+            "model": "Neural Matrix Factorization",
+            "imageSeed": 6
+          },
+          {
+            "rank": 4,
+            "id": 403,
+            "title": "Tribal Tibet Silver Grape Cluster Scale Pendant Necklace",
+            "category": "AMAZON FASHION",
+            "rating": 4.1,
+            "ratingCount": 300,
+            "price": null,
+            "score": 0.6845,
+            "why": "Recommended as a similar statement accessory.",
+            "model": "Neural Matrix Factorization",
+            "imageSeed": 3
+          }
+        ]
+      }
+    }
+  ],
+  "sponsoredPicks": [
+    {
+      "id": "ad-1",
+      "title": "Promoted Silver Charm Collection",
+      "category": "Sponsored Jewelry",
+      "score": 0.91,
+      "reason": "Matches charm-heavy user profile and high click likelihood.",
+      "rank": 1
+    },
+    {
+      "id": "ad-2",
+      "title": "Limited Deal: Statement Necklace Bundle",
+      "category": "Sponsored Fashion",
+      "score": 0.87,
+      "reason": "Good category fit with recommendation candidates.",
+      "rank": 2
+    },
+    {
+      "id": "ad-3",
+      "title": "Giftable Bracelet Picks",
+      "category": "Sponsored Accessories",
+      "score": 0.83,
+      "reason": "Relevant to bracelet and sterling silver behavior.",
+      "rank": 3
+    }
+  ],
+  "clusters": [
+    {
+      "name": "Sterling Silver Charms",
+      "description": "Animal, heart, flower, and gift charms frequently saved or rated by similar users.",
+      "size": 417,
+      "items": [
+        "NinaQueen Elephant Charm",
+        "NinaQueen Purple Star Charm",
+        "Heart Love Charm Bracelet"
+      ]
+    },
+    {
+      "name": "Statement Necklaces",
+      "description": "Colorful and decorative necklaces discovered by users with fashion accessory history.",
+      "size": 286,
+      "items": [
+        "Vintage Tribal Leaf Necklace",
+        "Purple Shell Oval Bead Necklace",
+        "Green Enamel Bib Necklace"
+      ]
+    },
+    {
+      "name": "Graph Neighborhood Finds",
+      "description": "Products close in the user-item graph after random-walk embedding training.",
+      "size": 193,
+      "items": [
+        "Butterfly Antique Silver Necklace",
+        "Geometric Oil Drop Chain",
+        "Angel Wing Fringe Necklace"
+      ]
+    }
+  ],
+  "similarItems": {
+    "405": [
+      {
+        "id": 398,
+        "title": "Qiyun Luxury Purple Shell Like Oval Bead Necklace",
+        "score": 0.92
+      },
+      {
+        "id": 436,
+        "title": "QIYUN.Z Geometric Oil Drop Silver Chain Tribal Necklace",
+        "score": 0.89
+      },
+      {
+        "id": 403,
+        "title": "Tribal Tibet Silver Grape Cluster Scale Pendant Necklace",
+        "score": 0.84
+      }
+    ],
+    "714": [
+      {
+        "id": 783,
+        "title": "NinaQueen Sweet Elephant 925 Sterling Silver Gift Charm",
+        "score": 0.91
+      },
+      {
+        "id": 775,
+        "title": "NinaQueen Star Pave 925 Sterling Silver Purple Charm",
+        "score": 0.87
+      },
+      {
+        "id": 778,
+        "title": "NinaQueen Heart-shaped Hollow 925 Sterling Silver Charm",
+        "score": 0.85
+      }
+    ]
+  }
+}
