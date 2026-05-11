@@ -1,4 +1,3 @@
-```md
 # Picksy Picks: Amazon Fashion Recommendation System
 
 Picksy Picks is a full-stack recommendation system demo built for the CSE427 project. The project takes Amazon Fashion review data, processes it into a clean recommendation dataset, compares multiple recommendation algorithms, evaluates them with ranking metrics, and presents the results through an interactive web application.
